@@ -1,0 +1,16 @@
+#!/usr/bin/env python3
+import json
+import argparse
+import requests
+parser = argparse.ArgumentParser(description="sender")
+parser.add_argument('filename', type=str)
+parser.add_argument('url', type=str)
+
+args = parser.parse_args()
+
+with open(args.filename) as f:
+  data = json.load(f)
+
+for tx in data:
+  r = requests.post(args.url, data=tx)  
+  r.raise_for_status()
