@@ -1,0 +1,46 @@
+version: '3.3'
+services:
+  rmb-rater:
+    image: registry-vpc.cn-hongkong.aliyuncs.com/dynamicheart/rater
+    environment:
+      RATER_ZK_HOSTS: zoo1:2181,zoo2:2181,zoo3:2181
+      RATER_CURRENCY_NAME: RMB
+      RATER_INIT_EXCHANGE_RATE: 2.0
+      RATER_RUN_TIME: 15
+    networks:
+     - ds-cluster
+  
+  usd-rater:
+    image: registry-vpc.cn-hongkong.aliyuncs.com/dynamicheart/rater
+    environment:
+      RATER_ZK_HOSTS: zoo1:2181,zoo2:2181,zoo3:2181
+      RATER_CURRENCY_NAME: USD
+      RATER_INIT_EXCHANGE_RATE: 12.0
+      RATER_RUN_TIME: 15
+    networks:
+     - ds-cluster
+  
+  jpy-rater:
+    image: registry-vpc.cn-hongkong.aliyuncs.com/dynamicheart/rater
+    environment:
+      RATER_ZK_HOSTS: zoo1:2181,zoo2:2181,zoo3:2181
+      RATER_CURRENCY_NAME: JPY
+      RATER_INIT_EXCHANGE_RATE: 0.5
+      RATER_RUN_TIME: 15
+    networks:
+     - ds-cluster
+  
+  eur-rater:
+    image: registry-vpc.cn-hongkong.aliyuncs.com/dynamicheart/rater
+    environment:
+      RATER_ZK_HOSTS: zoo1:2181,zoo2:2181,zoo3:2181
+      RATER_CURRENCY_NAME: EUR
+      RATER_INIT_EXCHANGE_RATE: 6.0
+      RATER_RUN_TIME: 15
+    networks:
+     - ds-cluster
+
+networks:
+  ds-cluster:
+    external: true
+
