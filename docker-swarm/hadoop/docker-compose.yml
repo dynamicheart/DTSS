@@ -1,0 +1,69 @@
+version: '3.3'
+services:
+  master:
+    hostname: master
+    image: registry-vpc.cn-hongkong.aliyuncs.com/vinx13/hadoop-namenode
+    networks:
+     - ds-cluster
+    ports:
+     - "50070:50070"
+     - "50090:50090"
+    depends_on:
+     - slave1
+     - slave2
+    tty: true
+    stdin_open: true
+    volumes:
+     - "/nfs/data/hadoop-master:/tmp/hadoop-root"
+  slave1:
+    image: registry-vpc.cn-hongkong.aliyuncs.com/vinx13/hadoop-datanode
+    networks:
+     - ds-cluster
+    ports:
+     - "50075:50075"
+     - "8042:8042"
+    tty: true
+    stdin_open: true
+    volumes:
+     - "/nfs/data/hadoop-slave1:/tmp/hadoop-root"
+
+  slave2:
+    image: registry-vpc.cn-hongkong.aliyuncs.com/vinx13/hadoop-datanode
+    networks:
+     - ds-cluster
+    ports:
+     - "50076:50075"
+     - "8043:8042"
+    tty: true
+    stdin_open: true
+    volumes:
+     - "/nfs/data/hadoop-slave2:/tmp/hadoop-root"
+
+  resourcemanager:
+    image: registry-vpc.cn-hongkong.aliyuncs.com/vinx13/resource-manager
+    hostname: resourcemanager
+    ports:
+     - "8032:8032"
+     - "8088:8088"
+     - "8188:8188"
+     - "19888:19888"
+     - "10200:10200"
+    tty: true
+    stdin_open: true
+    networks:
+     - ds-cluster
+  spark:
+    image: registry-vpc.cn-hongkong.aliyuncs.com/vinx13/spark
+    tty: true
+    stdin_open: true
+    depends_on:
+     - master
+    networks:
+     - ds-cluster
+    extra_hosts:
+     - "node1:192.168.0.140"
+     - "node2:192.168.0.139"
+     - "node3:192.168.0.138"
+networks:
+  ds-cluster:
+    external: true

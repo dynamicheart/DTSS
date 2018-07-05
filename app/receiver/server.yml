@@ -1,0 +1,19 @@
+version: '3.3'
+services:
+  server:
+    image: registry-vpc.cn-hongkong.aliyuncs.com/vinx13/server
+    ports:
+     - 20080:20080
+    environment:
+      BROKERS: node1:9094,node2:9094,node3:9094
+    deploy:
+      replicas: 3
+    networks:
+     - ds-cluster
+    extra_hosts:
+     - "node1:192.168.0.140"
+     - "node2:192.168.0.139"
+     - "node3:192.168.0.138"
+networks:
+  ds-cluster:
+    external: true
