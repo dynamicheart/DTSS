@@ -1,0 +1,21 @@
+version: "3.3"
+services:
+  mongo-express:
+    image: mongo-express
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_SERVER: data1,data2,data3
+    depends_on:
+      - mongos1
+      - mongos2
+    deploy:
+      placement:
+        constraints:
+          - node.hostname == node1
+    networks:
+      - ds-cluster
+
+networks:
+  ds-cluster:
+    external: true
