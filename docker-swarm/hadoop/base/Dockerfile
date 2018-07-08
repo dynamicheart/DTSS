@@ -6,11 +6,11 @@ WORKDIR /tmp
 
 RUN apt-get update && apt-get install -y openssh-server wget vim --allow-unauthenticated
 
-RUN wget https://mirrors.aliyun.com/apache/hadoop/common/hadoop-2.9.0/hadoop-2.9.0.tar.gz
+RUN wget https://www.apache.org/dist/hadoop/common/hadoop-2.7.6/hadoop-2.7.6.tar.gz 
 
-RUN tar -xzf hadoop-2.9.0.tar.gz && \
-    mv hadoop-2.9.0 /usr/local/hadoop && \
-    rm hadoop-2.9.0.tar.gz
+RUN tar -xzf hadoop-2.7.6.tar.gz && \
+    mv hadoop-2.7.6 /usr/local/hadoop && \
+    rm hadoop-2.7.6.tar.gz
 
 RUN ssh-keygen -t rsa -f ~/.ssh/id_rsa -P '' && \
     cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys

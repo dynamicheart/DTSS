@@ -11,12 +11,22 @@ services:
     depends_on:
      - slave1
      - slave2
+     - slave3
     tty: true
     stdin_open: true
     volumes:
      - "/nfs/data/hadoop-master:/tmp/hadoop-root"
+    extra_hosts:
+     - "node1:192.168.0.140"
+     - "node2:192.168.0.139"
+     - "node3:192.168.0.138"
+    deploy:
+      placement:
+        constraints:
+         - node.hostname==node1
   slave1:
     image: registry-vpc.cn-hongkong.aliyuncs.com/vinx13/hadoop-datanode
+    hostname: slave1
     networks:
      - ds-cluster
     ports:
@@ -24,20 +34,44 @@ services:
      - "8042:8042"
     tty: true
     stdin_open: true
+    extra_hosts:
+     - "node1:192.168.0.140"
+     - "node2:192.168.0.139"
+     - "node3:192.168.0.138"
     volumes:
      - "/nfs/data/hadoop-slave1:/tmp/hadoop-root"
 
   slave2:
     image: registry-vpc.cn-hongkong.aliyuncs.com/vinx13/hadoop-datanode
+    hostname: slave2
+    ports:
+     - "8043:8042"
     networks:
      - ds-cluster
-    ports:
-     - "50076:50075"
-     - "8043:8042"
     tty: true
     stdin_open: true
+    extra_hosts:
+     - "node1:192.168.0.140"
+     - "node2:192.168.0.139"
+     - "node3:192.168.0.138"
     volumes:
      - "/nfs/data/hadoop-slave2:/tmp/hadoop-root"
+
+  slave3:
+    image: registry-vpc.cn-hongkong.aliyuncs.com/vinx13/hadoop-datanode
+    hostname: slave3
+    ports:
+     - "8044:8042"
+    networks:
+     - ds-cluster
+    tty: true
+    stdin_open: true
+    extra_hosts:
+     - "node1:192.168.0.140"
+     - "node2:192.168.0.139"
+     - "node3:192.168.0.138"
+    volumes:
+     - "/nfs/data/hadoop-slave3:/tmp/hadoop-root"
 
   resourcemanager:
     image: registry-vpc.cn-hongkong.aliyuncs.com/vinx13/resource-manager
@@ -50,12 +84,28 @@ services:
      - "10200:10200"
     tty: true
     stdin_open: true
+    depends_on:
+     - master
+     - slave1
+     - slave2
+     - slave3
     networks:
      - ds-cluster
+    extra_hosts:
+     - "node1:192.168.0.140"
+     - "node2:192.168.0.139"
+     - "node3:192.168.0.138"
+    deploy:
+      placement:
+        constraints:
+          - node.hostname==node1
   spark:
     image: registry-vpc.cn-hongkong.aliyuncs.com/vinx13/spark
     tty: true
     stdin_open: true
+    ports:
+     - "4040:4040"
+     - "18080:18080"
     depends_on:
      - master
     networks:
@@ -64,6 +114,15 @@ services:
      - "node1:192.168.0.140"
      - "node2:192.168.0.139"
      - "node3:192.168.0.138"
+    deploy:
+      placement:
+        constraints:
+          - node.hostname==node2
+    volumes:
+     - "/nfs/dslab5.jar:/root/dslab5.jar"
+     - "/nfs/dslab5.py:/root/dslab5.py"
+     - "/nfs/run.sh:/opt/spark/run.sh"
+     - "/nfs/spark-streaming-kafka-0-8-assembly_2.11-2.3.1.jar:/opt/spark/spark-streaming-kafka-0-8-assembly_2.11-2.3.1.jar"
 networks:
   ds-cluster:
     external: true
