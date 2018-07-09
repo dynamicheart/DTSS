@@ -11,6 +11,7 @@ args = parser.parse_args()
 with open(args.filename) as f:
   data = json.load(f)
 
-for tx in data:
-  r = requests.post(args.url, data=tx)  
+for i, tx in enumerate(data):
+  print('{}/{}'.format(i, len(data)))
+  r = requests.post(args.url, json=tx)  
   r.raise_for_status()
