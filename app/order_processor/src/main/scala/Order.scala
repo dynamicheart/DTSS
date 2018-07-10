@@ -1,5 +1,3 @@
-package org.timchen.dslab5
-
 import java.util.Date
 
 import com.alibaba.fastjson.{JSON, JSONObject}

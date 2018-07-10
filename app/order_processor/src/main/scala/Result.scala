@@ -1,5 +1,3 @@
-package org.timchen.dslab5
-
 import java.text.SimpleDateFormat
 import java.util.Date
 

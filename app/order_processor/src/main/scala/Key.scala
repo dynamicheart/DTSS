@@ -1,5 +1,3 @@
-package org.timchen.dslab5
-
 import java.util.Date
 
 class Key(c: String, t: Date) extends Ordered[Key] with java.io.Serializable{

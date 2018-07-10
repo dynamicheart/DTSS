@@ -1,5 +1,3 @@
-package org.timchen.dslab5
-
 import java.text.SimpleDateFormat
 import java.util.Date
 
@@ -15,7 +13,7 @@ import Thread.sleep
 
 import scala.math.BigDecimal.RoundingMode
 
-object main {
+object Main {
   val mongoURI = "mongodb://mongos1/test.test"
   val brokers = "node1:9094,node2:9094,node3:9094"
   val topics = "tx"
