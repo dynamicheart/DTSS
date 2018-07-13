@@ -60,6 +60,13 @@ for i, order in enumerate(data1):
 for i, order in enumerate(data2):
     process_order(order)
 
-# Show resultss
-for result in results.values():
+# Show results
+def sort_value(elem):
+    return elem['time'] + elem['name']
+
+values = list(results.values())
+print(type(values))
+values.sort(key=sort_value)
+
+for result in values:
     print(result)
