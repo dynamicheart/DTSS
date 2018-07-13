@@ -78,6 +78,8 @@ services:
     networks:
       - ds-cluster
     command: mongos --configdb cfgrs/cfg1:27017,cfg2:27017,cfg3:27017
+    ports:
+      - 27017:27017
     deploy:
       placement:
         constraints:
@@ -88,6 +90,8 @@ services:
     networks:
       - ds-cluster
     command: mongos --configdb cfgrs/cfg1:27017,cfg2:27017,cfg3:27017
+    ports:
+      - 27018:27017
     deploy:
       placement:
         constraints:
