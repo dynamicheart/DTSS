@@ -60,13 +60,15 @@ for i, order in enumerate(data1):
 for i, order in enumerate(data2):
     process_order(order)
 
+
 # Show results
 def sort_value(elem):
-    return elem['time'] + elem['name']
+    weight = { 'RMB': '1', 'USD': '2', 'JPY': '3', 'EUR': '4' }
+    return elem['time'] + weight[elem['name']]
 
 values = list(results.values())
-print(type(values))
 values.sort(key=sort_value)
 
-for result in values:
-    print(result)
+print("%-6s %-12s %-10s %-16s" % ("name", "income", "expend", "time"))
+for value in values:
+    print("%-6s %-12.2f %-10.2f %-16s" % (value['name'], value['income'], value['expend'], value['time']))
