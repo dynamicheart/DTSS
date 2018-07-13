@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 import argparse
+from decimal import *
+
 from pymongo import MongoClient
 
 parser = argparse.ArgumentParser(description="view")
@@ -32,12 +34,12 @@ for date in date_set:
         if document['time'] == date:
             key = document['name'] + date
             if key in results:
-                results[key]['income'] += document['income']
+                results[key]['income'] += Decimal(document['income'])
                 results[key]['expend'] += document['expend']
             else:
                 results[key] = {
                     'name': document['name'],
-                    'income': document['income'],
+                    'income': Decimal(document['income']),
                     'expend': document['expend'],
                     'time': date
                 }

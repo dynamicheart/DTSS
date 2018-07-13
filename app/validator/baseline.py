@@ -1,5 +1,6 @@
 import json
 from datetime import datetime
+from decimal import *
 
 base_rate_table = {
     'RMB': 2.0,
@@ -26,9 +27,11 @@ def process_order(order):
     minute_diff = int(time_diff.total_seconds() / 60)
 
     src_expend = float(order['value']);
-    dst_income = order['value'] * \
-        (base_rate_table[order['src_name']] + (0.1 * minute_diff)) / \
-        (base_rate_table[order['dst_name']] + (0.1 * minute_diff))
+    dst_income = Decimal(order['value']) * \
+        Decimal(base_rate_table[order['src_name']] + (0.1 * minute_diff)) / \
+        Decimal(base_rate_table[order['dst_name']] + (0.1 * minute_diff))
+
+    dst_income = dst_income.quantize(Decimal('.01'), rounding=ROUND_HALF_UP)
 
     src_key = order['src_name'] + str(minute_diff) 
     if src_key in results:
@@ -36,7 +39,7 @@ def process_order(order):
     else:
         results[src_key] = {
             'name': order['src_name'],
-            'income': 0.0,
+            'income': Decimal(0.0),
             'expend': src_expend,
             'time': order_time.strftime('%Y-%m-%d %H:%M')
         }
